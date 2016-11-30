@@ -28,7 +28,7 @@ class MyComponent implements OnInit {
       print(resizeEvent.height);
     };
     resizeEvent.onWidthChanged = (){
-      print(resizeEvent.height);
+      print(resizeEvent.width);
     };
   }
 }
