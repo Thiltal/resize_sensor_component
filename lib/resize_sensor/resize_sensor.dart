@@ -5,34 +5,27 @@ import 'package:angular2/angular2.dart';
 
 /// Provide resize event on element
 /// Inspired by https://github.com/flowkey/resize-sensor
+///
+/// If there is NOT relative or absolute position on parent element of <resize-sensor>, relative is set.
+/// It might disable clicks on absolute icons around if wrong z-index is set !!!
+///
+/// Resize sensor stacks changes, so zero sizes are ommited on componets rerenders
+///
 /// Example usage:
 ///
 ///    @Component(
 ///       selector: 'my-component',
 ///       directives: const[ResizeSensor],
-///       template: '''
-///       <div #sizeCheckedElement>
+///       template: r'''
+///       <div>
 ///         some content
-///         <resize-sensor [resizeEvent]="resizeEvent"></resize-sensor>
+///         <resize-sensor (resize)="$event"></resize-sensor>
 ///       </div>
 ///    ''')
-///    class MyComponent implements OnInit {
-///      HtmlElement _sizeCheckedElement;
-///      ResizeEvent resizeEvent = new ResizeEvent();
-///      @ViewChild('sizeCheckedElement')
-///      set sizeCheckedElement(ElementRef elementRef) {
-///        _sizeCheckedElement = elementRef.nativeElement;
-///      }
+///    class MyComponent{
 ///
-///      @override
-///      void ngOnInit() {
-///        resizeEvent.sizeCheckedElement = _sizeCheckedElement;
-///        resizeEvent.onHeightChanged = (){
-///          print(resizeEvent.height);
-///        };
-///        resizeEvent.onWidthChanged = (){
-///          print(resizeEvent.height);
-///        };
+///      void resize(ResizeEvent event){
+///        print("${event.width} ${event.height}");
 ///      }
 ///    }
 @Component(
@@ -73,9 +66,8 @@ class ResizeSensor implements OnInit {
   }
 
   void onScroll() {
-    resizeEvent._sizesRecheck();
+    resizeEvent._sizesRecheck(resize);
     reset();
-    resize.add(resizeEvent);
   }
 
   @override
@@ -132,13 +124,14 @@ class ResizeEvent {
     onHeightChanged();
   }
 
-  void _sizesRecheck() {
+  void _sizesRecheck(EventEmitter<ResizeEvent> emitter) {
     if (_changePending) return;
     _changePending = true;
     new Future.delayed(const Duration(milliseconds: 20)).then((_) {
       _changePending = false;
       width = sizeCheckedElement.offsetWidth;
       height = sizeCheckedElement.offsetHeight;
+      emitter.add(this);
     });
   }
 }
