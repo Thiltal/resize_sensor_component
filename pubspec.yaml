@@ -1,4 +1,4 @@
-name: resize_sensor
+name: resize_sensor_component
 description: Resize sensor based on https://github.com/flowkey/resize-sensor
 version: 0.0.1
 environment:
