@@ -52,11 +52,6 @@ class ResizeSensorComponent implements OnInit {
     dynamic _host = hostElement.nativeElement;
     if(_host is HtmlElement){
       host = _host;
-      if(host.parent == null){
-        // Component is not attached in DOM. No idea why, no idea what to do.
-      }else{
-        resizeEvent.sizeCheckedElement = host.parent;
-      }
     }
   }
 
@@ -81,6 +76,12 @@ class ResizeSensorComponent implements OnInit {
   @override
   void ngOnInit() {
     reset();
+    if(host.parent == null){
+      throw "detached resize sensor";
+      // Component is not attached in DOM. No idea why, no idea what to do.
+    }else{
+      resizeEvent.sizeCheckedElement = host.parent;
+    }
   }
 
   void reset() {
