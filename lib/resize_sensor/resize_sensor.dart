@@ -75,6 +75,7 @@ class ResizeSensor implements OnInit {
   void onScroll() {
     resizeEvent._sizesRecheck();
     reset();
+    resize.add(resizeEvent);
   }
 
   @override
