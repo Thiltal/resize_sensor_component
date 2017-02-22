@@ -40,15 +40,14 @@ import 'package:angular2/angular2.dart';
              <div class="resize_sensor__inner" style="width: 200%; height: 200%"></div>
           </div>
         </div>
-    '''
-)
+    ''')
 class ResizeSensor implements OnInit {
   HtmlElement _expandElement;
   HtmlElement _shrinkElement;
   Element host;
   ResizeEvent resizeEvent = new ResizeEvent();
 
-  ResizeSensor(ElementRef hostElement):host = hostElement.nativeElement{
+  ResizeSensor(ElementRef hostElement) : host = hostElement.nativeElement {
     resizeEvent.sizeCheckedElement = host.parent;
   }
 
@@ -97,13 +96,11 @@ class ResizeEvent {
   HtmlElement get sizeCheckedElement => _sizeCheckedElement;
 
   set sizeCheckedElement(Element value) {
-    if(value == null){
-      throw("detached resize sensor");
+    if (value == null) {
+      throw ("detached resize sensor");
     }
     _sizeCheckedElement = value;
-    if (_sizeCheckedElement
-        .getComputedStyle()
-        .position == 'static') {
+    if (_sizeCheckedElement.getComputedStyle().position == 'static') {
       _sizeCheckedElement.style.position = 'relative';
     }
   }
@@ -129,9 +126,15 @@ class ResizeEvent {
     _changePending = true;
     new Future.delayed(const Duration(milliseconds: 20)).then((_) {
       _changePending = false;
-      width = sizeCheckedElement.offsetWidth;
-      height = sizeCheckedElement.offsetHeight;
-      emitter.add(this);
+
+      int preparedWidth = sizeCheckedElement.offsetWidth;
+      int preparedHeight = sizeCheckedElement.offsetHeight;
+
+      if (width != preparedWidth || height != preparedHeight) {
+        width = preparedWidth;
+        height = preparedHeight;
+        emitter.add(this);
+      }
     });
   }
 }
