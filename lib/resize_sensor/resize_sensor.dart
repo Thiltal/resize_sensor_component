@@ -52,8 +52,15 @@ import 'package:angular2/angular2.dart';
 class ResizeSensor implements OnInit {
   HtmlElement _expandElement;
   HtmlElement _shrinkElement;
+  Element host;
+  ResizeEvent resizeEvent = new ResizeEvent();
 
-  @Input() ResizeEvent resizeEvent;
+  ResizeSensor(ElementRef hostElement):host = hostElement.nativeElement{
+    resizeEvent.sizeCheckedElement = host.parent;
+  }
+
+  @Output("resize")
+  final resize = new EventEmitter<ResizeEvent>(false);
 
   @ViewChild('expand')
   set expand(ElementRef elementRef) {
@@ -96,7 +103,10 @@ class ResizeEvent {
 
   HtmlElement get sizeCheckedElement => _sizeCheckedElement;
 
-  set sizeCheckedElement(HtmlElement value) {
+  set sizeCheckedElement(Element value) {
+    if(value == null){
+      throw("detached resize sensor");
+    }
     _sizeCheckedElement = value;
     if (_sizeCheckedElement
         .getComputedStyle()
