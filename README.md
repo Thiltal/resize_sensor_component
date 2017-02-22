@@ -8,28 +8,15 @@ some more Angular 2 dart components
 @Component(
    selector: 'my-component',
    directives: const[ResizeSensor],
-   template: '''
-   <div #sizeCheckedElement>
+   template: r'''
+   <div>
      some content
-     <resize-sensor [resizeEvent]="resizeEvent"></resize-sensor>
+     <resize-sensor (resize)="$event"></resize-sensor>
    </div>
 ''')
-class MyComponent implements OnInit {
-  HtmlElement _sizeCheckedElement;
-  ResizeEvent resizeEvent = new ResizeEvent();
-  @ViewChild('sizeCheckedElement')
-  set sizeCheckedElement(ElementRef elementRef) {
-    _sizeCheckedElement = elementRef.nativeElement;
-  }
-  @override
-  void ngOnInit() {
-    resizeEvent.sizeCheckedElement = _sizeCheckedElement;
-    resizeEvent.onHeightChanged = (){
-      print(resizeEvent.height);
-    };
-    resizeEvent.onWidthChanged = (){
-      print(resizeEvent.width);
-    };
-  }
-}
+   class MyComponent{
+     void resize(ResizeEvent event){
+       print("${event.width} ${event.height}");
+     }
+   }
 ```

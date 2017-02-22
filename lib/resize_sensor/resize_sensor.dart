@@ -9,7 +9,9 @@ import 'package:angular2/angular2.dart';
 /// If there is NOT relative or absolute position on parent element of <resize-sensor>, relative is set.
 /// It might disable clicks on absolute icons around if wrong z-index is set !!!
 ///
-/// Resize sensor stacks changes, so zero sizes are ommited on componets rerenders
+/// Resize sensor stacks changes, so zero sizes are omitted on component repaint
+///
+/// Not reliably tested :-(
 ///
 /// Example usage:
 ///
@@ -23,7 +25,6 @@ import 'package:angular2/angular2.dart';
 ///       </div>
 ///    ''')
 ///    class MyComponent{
-///
 ///      void resize(ResizeEvent event){
 ///        print("${event.width} ${event.height}");
 ///      }
