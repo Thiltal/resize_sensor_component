@@ -47,6 +47,7 @@ class ResizeSensorComponent implements OnInit {
   HtmlElement _shrinkElement;
   HtmlElement host;
   ResizeEvent resizeEvent = new ResizeEvent();
+  bool active = false;
 
   ResizeSensorComponent(ElementRef hostElement) {
     dynamic _host = hostElement.nativeElement;
@@ -69,6 +70,7 @@ class ResizeSensorComponent implements OnInit {
   }
 
   void onScroll() {
+    if(!active)return;
     resizeEvent._sizesRecheck(resize);
     reset();
   }
@@ -77,10 +79,11 @@ class ResizeSensorComponent implements OnInit {
   void ngOnInit() {
     reset();
     if(host.parent == null){
-      throw "detached resize sensor";
+      // if *ngIf used, component is created detached
       // Component is not attached in DOM. No idea why, no idea what to do.
     }else{
       resizeEvent.sizeCheckedElement = host.parent;
+      active = true;
     }
   }
 
