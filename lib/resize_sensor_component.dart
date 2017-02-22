@@ -32,7 +32,7 @@ import 'package:angular2/angular2.dart';
 @Component(
     selector: 'resize-sensor',
     styleUrls: const ["resize_sensor.scss.css"],
-    template: '''
+    template: r'''
         <div class="resize_sensor__cont">
           <div #expand (scroll)="onScroll()" class="resize_sensor__cont" >
              <div class="resize_sensor__inner" style="width: 100000px; height: 100000px;"></div>
@@ -42,14 +42,18 @@ import 'package:angular2/angular2.dart';
           </div>
         </div>
     ''')
-class ResizeSensor implements OnInit {
+class ResizeSensorComponent implements OnInit {
   HtmlElement _expandElement;
   HtmlElement _shrinkElement;
-  Element host;
+  HtmlElement host;
   ResizeEvent resizeEvent = new ResizeEvent();
 
-  ResizeSensor(ElementRef hostElement) : host = hostElement.nativeElement {
-    resizeEvent.sizeCheckedElement = host.parent;
+  ResizeSensorComponent(ElementRef hostElement) {
+    dynamic _host = hostElement.nativeElement;
+    if(_host is HtmlElement){
+      host = _host;
+      resizeEvent.sizeCheckedElement = host.parent;
+    }
   }
 
   @Output("resize")
@@ -57,12 +61,12 @@ class ResizeSensor implements OnInit {
 
   @ViewChild('expand')
   set expand(ElementRef elementRef) {
-    _expandElement = elementRef.nativeElement;
+    _expandElement = (elementRef.nativeElement as HtmlElement);
   }
 
   @ViewChild('shrink')
   set shrink(ElementRef elementRef) {
-    _shrinkElement = elementRef.nativeElement;
+    _shrinkElement = (elementRef.nativeElement as HtmlElement);
   }
 
   void onScroll() {
@@ -92,9 +96,9 @@ class ResizeEvent {
   bool _changePending = false;
   Function onHeightChanged = () {};
   Function onWidthChanged = () {};
-  HtmlElement _sizeCheckedElement;
+  Element _sizeCheckedElement;
 
-  HtmlElement get sizeCheckedElement => _sizeCheckedElement;
+  Element get sizeCheckedElement => _sizeCheckedElement;
 
   set sizeCheckedElement(Element value) {
     if (value == null) {
