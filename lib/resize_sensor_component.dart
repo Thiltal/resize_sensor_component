@@ -52,7 +52,11 @@ class ResizeSensorComponent implements OnInit {
     dynamic _host = hostElement.nativeElement;
     if(_host is HtmlElement){
       host = _host;
-      resizeEvent.sizeCheckedElement = host.parent;
+      if(host.parent == null){
+        // Component is not attached in DOM. No idea why, no idea what to do.
+      }else{
+        resizeEvent.sizeCheckedElement = host.parent;
+      }
     }
   }
 
