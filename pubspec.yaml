@@ -1,5 +1,5 @@
-name: tal_components
-description: some more Angular2 dart components
+name: resize_sensor
+description: Resize sensor based on https://github.com/flowkey/resize-sensor
 version: 0.0.1
 environment:
   sdk: '>=1.19.0 <2.0.0'

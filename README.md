@@ -1,5 +1,4 @@
-some more Angular 2 dart components
- 
+
  * Resize sensor
    - component checking for element sizes change inspired by 
    https://github.com/flowkey/resize-sensor

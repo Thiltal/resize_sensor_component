@@ -125,7 +125,7 @@ class ResizeEvent {
   void _sizesRecheck(EventEmitter<ResizeEvent> emitter) {
     if (_changePending) return;
     _changePending = true;
-    new Future.delayed(const Duration(milliseconds: 20)).then((_) {
+    new Future<Null>.delayed(const Duration(milliseconds: 20)).then<Null>((_) {
       _changePending = false;
 
       int preparedWidth = sizeCheckedElement.offsetWidth;
