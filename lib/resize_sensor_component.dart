@@ -6,12 +6,12 @@ import 'package:angular2/angular2.dart';
 /// Provide resize event on element
 /// Inspired by https://github.com/flowkey/resize-sensor
 ///
+/// !!! WARNING !!!
 /// If there is NOT relative or absolute position on parent element of <resize-sensor>, relative is set.
 /// It might disable clicks on absolute icons around if wrong z-index is set !!!
 ///
 /// Resize sensor stacks changes, so zero sizes are omitted on component repaint
 ///
-/// Not reliably tested :-(
 ///
 /// Example usage:
 ///
@@ -21,7 +21,7 @@ import 'package:angular2/angular2.dart';
 ///       template: r'''
 ///       <div>
 ///         some content
-///         <resize-sensor (resize)="$event"></resize-sensor>
+///         <resize-sensor (resize)="resize($event)"></resize-sensor>
 ///       </div>
 ///    ''')
 ///    class MyComponent{
@@ -31,7 +31,8 @@ import 'package:angular2/angular2.dart';
 ///    }
 @Component(
     selector: 'resize-sensor',
-    styleUrls: const ["resize_sensor.scss.css"],
+    styleUrls: const ["resize_sensor.css"],
+    outputs: const ["resize"],
     template: r'''
         <div class="resize_sensor__cont">
           <div #expand (scroll)="onScroll()" class="resize_sensor__cont" >
@@ -49,14 +50,8 @@ class ResizeSensorComponent implements OnInit {
   ResizeEvent resizeEvent = new ResizeEvent();
   bool active = false;
 
-  ResizeSensorComponent(ElementRef hostElement) {
-    dynamic _host = hostElement.nativeElement;
-    if(_host is HtmlElement){
-      host = _host;
-    }
-  }
+  ResizeSensorComponent(ElementRef _host):host = (_host.nativeElement as HtmlElement);
 
-  @Output("resize")
   final resize = new EventEmitter<ResizeEvent>(false);
 
   @ViewChild('expand')
@@ -70,7 +65,7 @@ class ResizeSensorComponent implements OnInit {
   }
 
   void onScroll() {
-    if(!active)return;
+    if (!active) return;
     resizeEvent._sizesRecheck(resize);
     reset();
   }
@@ -78,10 +73,9 @@ class ResizeSensorComponent implements OnInit {
   @override
   void ngOnInit() {
     reset();
-    if(host.parent == null){
-      // if *ngIf used, component is created detached
-      // Component is not attached in DOM. No idea why, no idea what to do.
-    }else{
+    if (host.parent == null) {
+      print("resize sensor detached");
+    } else {
       resizeEvent.sizeCheckedElement = host.parent;
       active = true;
     }
