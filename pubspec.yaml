@@ -1,4 +1,6 @@
 name: resize_sensor_component
+author: Zdeněk Mlčoch <mlcoch.zdenek@gmail.com>
+homepage: https://github.com/Thiltal/resize_sensor_component
 description: Resize sensor based on https://github.com/flowkey/resize-sensor
 version: 0.0.1
 environment:
